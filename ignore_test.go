@@ -2,15 +2,12 @@
 package ignore
 
 import (
-	"os"
-
-	"io/ioutil"
-	"path/filepath"
-
 	"fmt"
-	"testing"
-
+	"io/ioutil"
+	"os"
+	"path/filepath"
 	"runtime"
+	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -18,6 +15,20 @@ import (
 const (
 	TEST_DIR = "test_fixtures"
 )
+
+// this example is without '// Output: ...' test, because of stability of the test.
+// an other solution is to create a fixture file to run the test with.
+func Example() {
+	d, err := CompileIgnoreFile("../.gitignore")
+	if err != nil {
+		panic(err)
+	}
+	totalPattern := len(d.Patterns)
+	fmt.Println("Total:", totalPattern)
+	for i := 0; i < totalPattern; i++ {
+		fmt.Printf("- %v\t%v\t%s\n", i, d.Negate[i], d.Patterns[i])
+	}
+}
 
 // Helper function to setup a test fixture dir and write to
 // it a file with the name "fname" and content "content"
@@ -123,7 +134,7 @@ abc/def
 	assert.Nil(test, error, "error should be nil")
 	assert.NotNil(test, object, "object should not be nil")
 
-	assert.Equal(test, 2, len(object.patterns), "should have two regex pattern")
+	assert.Equal(test, 2, len(object.Patterns), "should have two regex pattern")
 	assert.Equal(test, false, object.MatchesPath("abc/abc"), "/abc/abc should not match")
 	assert.Equal(test, true, object.MatchesPath("abc/def"), "/abc/def should match")
 }
@@ -141,7 +152,7 @@ d/e/f
 	assert.Nil(test, error, "error should be nil")
 	assert.NotNil(test, object, "object should not be nil")
 
-	assert.Equal(test, 3, len(object.patterns), "should have 3 regex patterns")
+	assert.Equal(test, 3, len(object.Patterns), "should have 3 regex patterns")
 	assert.Equal(test, true, object.MatchesPath("a/b/c"), "a/b/c should match")
 	assert.Equal(test, true, object.MatchesPath("a/b/c/d"), "a/b/c/d should match")
 	assert.Equal(test, true, object.MatchesPath("d/e/f"), "d/e/f should match")
