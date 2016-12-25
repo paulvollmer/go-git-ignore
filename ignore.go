@@ -58,11 +58,11 @@ import (
 	"strings"
 )
 
+////////////////////////////////////////////////////////////
+
 // An IgnoreParser is an interface which exposes two methods:
 //   MatchesPath() - Returns true if the path is targeted by the patterns compiled in the GitIgnore structure
 type IgnoreParser interface {
-	IncludesPath(f string) bool
-	IgnoresPath(f string) bool
 	MatchesPath(f string) bool
 }
 
@@ -72,6 +72,7 @@ type GitIgnore struct {
 	Patterns []*regexp.Regexp // List of regexp patterns which this ignore file applies
 	Negate   []bool           // List of booleans which determine if the pattern is negated
 }
+////////////////////////////////////////////////////////////
 
 // This function pretty much attempts to mimic the parsing rules
 // listed above at the start of this file
@@ -177,6 +178,8 @@ func CompileIgnoreFile(fpath string) (*GitIgnore, error) {
 	return nil, error
 }
 
+////////////////////////////////////////////////////////////
+
 // MatchesPath is an interface function for the IgnoreParser interface.
 // It returns true if the given GitIgnore structure would target a given
 // path string "f"
@@ -198,3 +201,5 @@ func (g GitIgnore) MatchesPath(f string) bool {
 	}
 	return matchesPath
 }
+
+////////////////////////////////////////////////////////////

@@ -29,13 +29,13 @@ func Example() {
 		fmt.Printf("- %v\t%v\t%s\n", i, d.Negate[i], d.Patterns[i])
 	}
 }
+////////////////////////////////////////////////////////////
 
 // Helper function to setup a test fixture dir and write to
 // it a file with the name "fname" and content "content"
 func writeFileToTestDir(fname, content string) {
 	testDirPath := "." + string(filepath.Separator) + TEST_DIR
 	testFilePath := testDirPath + string(filepath.Separator) + fname
-
 	_ = os.MkdirAll(testDirPath, 0755)
 	_ = ioutil.WriteFile(testFilePath, []byte(content), os.ModePerm)
 }
@@ -43,6 +43,8 @@ func writeFileToTestDir(fname, content string) {
 func cleanupTestDir() {
 	_ = os.RemoveAll(fmt.Sprintf(".%s%s", string(filepath.Separator), TEST_DIR))
 }
+
+////////////////////////////////////////////////////////////
 
 // Validate "CompileIgnoreLines()"
 func TestCompileIgnoreLines(test *testing.T) {
